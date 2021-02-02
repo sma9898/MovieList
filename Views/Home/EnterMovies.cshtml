@@ -1,0 +1,69 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = "Enter Movie Information";
+}
+
+<!--Connect model-->
+@model MovieList.Models.MovieResponse
+
+<form asp-action="EnterMovies" method="post">
+    <div asp-validation-summary="All">
+        <!--Trying this from Microsoft-->
+        @Html.ValidationSummary(true)
+
+        <!--Connect model on both labels and inputs so clicking either will highlight the appropriate input field-->
+        <div>
+            <label asp-for="Category">Category:</label>
+            <input asp-for="Category" />
+        </div>
+
+        <div>
+            <label asp-for="Title">Title:</label>
+            <input asp-for="Title" />
+        </div>
+
+        <div>
+            <label asp-for="Year">Year:</label>
+            <input asp-for="Year" />
+        </div>
+
+        <div>
+            <label asp-for="Director">Director:</label>
+            <input asp-for="Director" />
+        </div>
+
+        <div>
+            <label asp-for="Rating">Rating:</label>
+            <select asp-for="Rating">
+                <option value="">Select One</option>
+                <option value="G">G</option>
+                <option value="PG">PG</option>
+                <option value="PG-13">PG-13</option>
+                <option value="R">R</option>
+            </select>
+        </div>
+
+        <div>
+            <label asp-for="Edited">Is it edited?</label>
+            <select asp-for="Edited">
+                <option value="">Select One</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+
+        <div>
+            <label asp-for="LentTo">Who is it being lent to?</label>
+            <input asp-for="LentTo" />
+        </div>
+
+        <div>
+            <label asp-for="Notes">Notes:</label>
+            <input asp-for="Notes" />
+        </div>
+
+        <button type="submit">Submit Movie Information</button>
+    </div>
+</form>

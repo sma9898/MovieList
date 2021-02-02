@@ -1,0 +1,28 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = "Movie information for " + Model.Title + " submitted. Thank you!";
+}
+
+<!--Bring in the model-->
+@model MovieList.Models.MovieResponse
+
+<div>
+    <h2>Movie info will be processed.</h2>
+    <br />
+    <h1>
+        @if (Model.Title == "Independence Day")
+        {
+            @:Actually this movie is not accepted and will not be added to the list. Sorry! :)
+        }
+        else
+        {
+            @:Awesome! Thank you!
+        }
+    </h1>
+</div>
+
+<div>
+    Click <a asp-action="MovieList">here</a> to see the list of movies.
+</div>

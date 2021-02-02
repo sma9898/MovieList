@@ -33,7 +33,7 @@ namespace MovieList.Controllers
         public IActionResult EnterMovies(MovieResponse appResponse)
         {
             //Check validation and don't allow Indpendence Day into the movie list
-            if (ModelState.IsValid && (appResponse.Title != "Independence Day"))
+            if (ModelState.IsValid) // && (appResponse.Title != "Independence Day"))
             {
                 //Display Title entered in form
                 //Debug.WriteLine("Title: " + appResponse.Title);
@@ -43,11 +43,11 @@ namespace MovieList.Controllers
                 //Pass in form/model data
                 return View("Confirmation", appResponse);
             }
-            else if (ModelState.IsValid)
+            /*else if (ModelState.IsValid)
             {
                 return View("Confirmation", appResponse);
                 //"Independence Day does not count :)";
-            }
+            }*/
             else
             {
                 return View();
@@ -58,7 +58,7 @@ namespace MovieList.Controllers
         //Action for the Movie List from the Confirmation page
         public IActionResult MovieList()
         {
-            return View(TempStorage.Movies);
+            return View(TempStorage.Movies.Where(r => r.Title != "Independence Day"));
         }
 
         //For My Podcasts page

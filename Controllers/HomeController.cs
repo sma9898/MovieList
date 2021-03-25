@@ -11,11 +11,14 @@ namespace MovieList.Controllers
 {
     public class HomeController : Controller
     {
+        private MovieListContext context { get; set; }
+
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, MovieListContext con)
         {
             _logger = logger;
+            context = con;
         }
 
         public IActionResult Index()
@@ -38,7 +41,12 @@ namespace MovieList.Controllers
                 //Display Title entered in form
                 //Debug.WriteLine("Title: " + appResponse.Title);
 
-                TempStorage.AddMovie(appResponse);
+
+                //Add to database
+                context.Movies.Add(appResponse);
+                context.SaveChanges();
+
+                //TempStorage.AddMovie(appResponse);
 
                 //Pass in form/model data
                 return View("Confirmation", appResponse);
@@ -58,7 +66,48 @@ namespace MovieList.Controllers
         //Action for the Movie List from the Confirmation page
         public IActionResult MovieList()
         {
-            return View(TempStorage.Movies.Where(r => r.Title != "Independence Day"));
+            return View(context.Movies);
+            //            return View(Repository.AllEmpoyees);
+
+            //return View(TempStorage.Movies.Where(r => r.Title != "Independence Day"));
+        }
+
+        //Update/Edit movie information
+        public IActionResult Update(string Title)
+        {
+            MovieResponse movie = context.Movies.Where(m => m.Title == Title).FirstOrDefault();
+            return View(movie);
+        }
+
+        [HttpPost]
+        public IActionResult Update(MovieResponse movie, string Title)
+        {
+            //Get the information
+            context.Movies.Where(m => m.Title == Title).FirstOrDefault().Category = movie.Category;
+            context.Movies.Where(m => m.Title == Title).FirstOrDefault().Title = movie.Title;
+            context.Movies.Where(m => m.Title == Title).FirstOrDefault().Director = movie.Director;
+            context.Movies.Where(m => m.Title == Title).FirstOrDefault().Year = movie.Year;
+            context.Movies.Where(m => m.Title == Title).FirstOrDefault().Rating = movie.Rating;
+            context.Movies.Where(m => m.Title == Title).FirstOrDefault().Edited = movie.Edited;
+            context.Movies.Where(m => m.Title == Title).FirstOrDefault().LentTo = movie.LentTo;
+            context.Movies.Where(m => m.Title == Title).FirstOrDefault().Notes = movie.Notes;
+
+            //Save to the database
+            context.SaveChanges();
+
+            return RedirectToAction("MovieList");
+        }
+
+        //Delete
+        [HttpPost]
+        public IActionResult Delete(string Title)
+        {
+            MovieResponse movie = context.Movies.Where(m => m.Title == Title).FirstOrDefault();
+            context.Remove(movie);
+            //Save to the database
+            context.SaveChanges();
+
+            return RedirectToAction("MovieList");
         }
 
         //For My Podcasts page

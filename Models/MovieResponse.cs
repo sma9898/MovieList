@@ -8,6 +8,9 @@ namespace MovieList.Models
 {
     public class MovieResponse
     {
+        [Key] //Primary Key
+        public int MovieId { get; set; }
+
         [Required(ErrorMessage = "Category is required")]
         public string Category { get; set; }
 
